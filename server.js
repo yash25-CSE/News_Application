@@ -4,6 +4,7 @@ const ejsMate = require("ejs-mate");
 require("dotenv").config();
 const path = require("path");
 
+
 // EJS ENGINE
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
