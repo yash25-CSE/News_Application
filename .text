@@ -1,0 +1,26 @@
+project/
+│ server.js
+│ package.json
+│ .gitignore
+│ README.md
+│ .env (NOT uploaded)
+│
+└── src/
+    ├── routes/
+    │   ├── article.routes.js
+    │   ├── user.routes.js
+    │   ├── video.routes.js
+    │   ├── current_affair.routes.js
+    │   └── admin.routes.js
+    ├── models/
+    ├── config/db.js
+│
+└── views/
+    ├── admin/
+    ├── user/
+    └── index.ejs
+│
+└── public/
+    ├── css/
+    ├── js/
+    ├── uploads/

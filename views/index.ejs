@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App Selection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        :root {
+            --primary-color: #007bff; /* Blue */
+            --admin-color: #dc3545; /* Red */
+            --user-color: #28a745;  /* Green */
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .selection-card {
+            border-radius: 15px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            overflow: hidden;
+            border: none;
+            height: 350px; /* Fixed height for consistency */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-card {
+            background: linear-gradient(135deg, #f8d7da, var(--admin-color));
+            color: white;
+        }
+
+        .user-card {
+            background: linear-gradient(135deg, #d4edda, var(--user-color));
+            color: white;
+        }
+
+        .icon-large {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark">Welcome to the News Application</h1>
+            <p class="lead text-secondary">Please select your role to proceed.</p>
+        </div>
+
+        <div class="col-md-5 mb-4">
+            <div id="adminCard" class="selection-card admin-card p-4 shadow-lg" data-target-url="/admin/login">   <!-- Added id for easier JS targeting -->
+                <div class="icon-large">
+                    <span class="d-block" style="font-size: 4rem;">⚙️</span>
+                </div>
+                <h2 class="card-title">Admin Side</h2>
+                <p class="card-text">Manage content, users, settings, and application configuration. This area is restricted.</p>
+                <button class="btn btn-outline-light mt-3 fw-bold" onclick="goToPage('adminCard')">Go to Admin</button>
+            </div>
+        </div>
+
+        <div class="col-md-5 mb-4">
+            <div id="userCard" class="selection-card user-card p-4 shadow-lg" data-target-url="/news">    <!-- Added id for easier JS targeting -->
+                <div class="icon-large">
+                    <span class="d-block" style="font-size: 4rem;">📰</span>
+                </div>
+                <h2 class="card-title">User Side</h2>
+                <p class="card-text">Browse the latest news, read articles, and customize your feed. This is the main application.</p>
+                <button class="btn btn-outline-light mt-3 fw-bold" onclick="goToPage('userCard')">Go to News Feed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+    // 
+    function goToPage(cardId) {
+        const card = document.getElementById(cardId);
+        const targetUrl = card.getAttribute('data-target-url');
+
+        // Optional: Add a simple confirmation or tracking before redirecting
+        console.log('Redirecting to:', targetUrl);
+
+        // In a real application, you might do an AJAX call or check authentication here.
+        // For this example, we'll just redirect.
+        window.location.href = targetUrl;
+    }
+
+    // Optional: Make the entire card clickable (not just the button)
+    document.getElementById('adminCard').addEventListener('click', function(event) {
+        // Prevent button click from triggering card click twice
+        if (event.target.tagName !== 'BUTTON') {
+            goToPage('adminCard');
+        }
+    });
+
+    document.getElementById('userCard').addEventListener('click', function(event) {
+        // Prevent button click from triggering card click twice
+        if (event.target.tagName !== 'BUTTON') {
+            goToPage('userCard');
+        }
+    });
+</script>
+
+</body>
+</html>

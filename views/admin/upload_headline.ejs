@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Headline</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="text-primary mb-4"><i class="bi bi-megaphone-fill"></i> Upload Headline</h2>
+
+    <form action="/admin/headlines/publish" method="POST">
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Headline Title</label>
+            <input type="text" class="form-control" name="title" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Short Summary (Optional)</label>
+            <textarea class="form-control" name="summary" rows="4"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Image URL (Optional)</label>
+            <input type="text" class="form-control" name="imageUrl" placeholder="Paste image link">
+        </div>
+
+        <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" id="publishNow" name="status" value="published" checked>
+            <label class="form-check-label fw-bold" for="publishNow">Publish Now</label>
+        </div>
+
+        <button class="btn btn-success btn-lg w-100">Publish Headline</button>
+    </form>
+</div>
+
+</body>
+</html>
