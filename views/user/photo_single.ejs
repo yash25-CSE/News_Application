@@ -3,118 +3,1220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= post.title %> - Photo View</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <title><%= post.title %> - Photo Gallery | NewsHub</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* Base styling for a clean page background */
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #dc2626;
+            --accent-color: #2563eb;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f7f7f7; /* Light background */
-            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            color: #1f2937; /* Dark gray text */
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
             min-height: 100vh;
         }
-        /* Custom image styling for max width and shadow */
-        .post-image {
-            /* Now the image itself is constrained to 100% of its parent's width */
-            width: 100%; 
-            height: auto;
-            border-radius: 1rem; /* rounded-xl */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+
+        /* Navigation Bar */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2d4a7c 100%);
+            box-shadow: var(--shadow-md);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: #fbbf24;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-custom {
+            background: transparent;
+            padding: 1.5rem 0 1rem;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-light);
+        }
+
+        /* Photo Header */
+        .photo-header {
+            background: white;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .photo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+
+        .photo-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item i {
+            color: var(--accent-color);
+        }
+
+        .photo-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent-color);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0 4rem;
+        }
+
+        /* Photo Display */
+        .photo-display {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .photo-container {
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: var(--light-bg);
+            transition: transform 0.5s ease;
+        }
+
+        .photo-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .control-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .control-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .photo-info {
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            background: white;
+        }
+
+        .photo-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 0;
+        }
+
+        .photo-description p {
+            margin-bottom: 1.5rem;
+        }
+
+        .photo-description p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: var(--light-bg);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .social-share {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
+
+        .social-facebook { background: #3b5998; }
+        .social-twitter { background: #1da1f2; }
+        .social-pinterest { background: #e60023; }
+        .social-link { background: var(--accent-color); }
+
+        /* Photo Stats */
+        .photo-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .comment-count {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Comment List */
+        .comment-list {
+            margin-bottom: 2.5rem;
+        }
+
+        .comment-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .comment-item:hover {
+            background: var(--light-bg);
+            border-radius: var(--radius-md);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .comment-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+        }
+
+        .comment-time {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .comment-text {
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-left: 4rem;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .no-comments i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        /* Comment Form */
+        .comment-form {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .form-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control-custom {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(30, 64, 175, 0.2);
+        }
+
+        /* Related Photos */
+        .related-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .related-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .related-photo {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .related-photo:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .related-photo img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
             transition: transform 0.3s ease;
         }
-        .post-image:hover {
-            transform: scale(1.01);
+
+        .related-photo:hover img {
+            transform: scale(1.05);
         }
-        /* Subtle divider enhancement */
-        hr {
-            border-top: 1px solid #d1d5db; /* border-gray-300 */
-            margin-top: 2.5rem;
-            margin-bottom: 2.5rem;
+
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 1rem;
+            color: white;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .photo-title {
+                font-size: 2.2rem;
+            }
+            
+            .photo-container {
+                height: 400px;
+            }
+            
+            .photo-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .social-share {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .photo-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .comment-text {
+                padding-left: 0;
+            }
+            
+            .comment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .comment-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .photo-header {
+                padding: 2rem 0;
+            }
+            
+            .photo-title {
+                font-size: 1.8rem;
+            }
+            
+            .photo-container {
+                height: 300px;
+            }
+            
+            .comments-section, .related-section {
+                padding: 1.5rem;
+            }
+            
+            .related-photos {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animation for photo loading */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .photo-container img {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Image zoom functionality */
+        .photo-zoom {
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-zoom.zoomed {
+            cursor: zoom-out;
+            transform: scale(1.5);
+            transform-origin: center;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-
-    <div class="py-12 px-4">
-        
-        <div class="container mx-auto max-w-4xl bg-white shadow-2xl rounded-xl p-8 lg:p-12">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-newspaper"></i> NewsHub
+            </a>
             
-            <div class="mb-8 flex justify-between items-center border-b pb-4 border-gray-200">
-                <a href="javascript:history.back()" class="btn btn-secondary bg-white text-gray-700 hover:bg-gray-100 border-gray-300 shadow-sm transition duration-300 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Back to Gallery
-                </a>
-                <button class="btn btn-warning bg-yellow-500 text-white hover:bg-yellow-600 transition duration-300 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                    </svg>
-                    Edit Post
-                </button>
-            </div>
-
-            <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 mb-6 border-l-4 border-indigo-600 pl-4">
-                <%= post.title %>
-            </h1>
-
-            <div class="mb-8 flex justify-center">
-                <div class="max-w-xl lg:max-w-2xl w-full">
-                    <% if (post.imageFile) { %>
-                        <img src="<%= post.imageFile %>" class="post-image">
-                    <% } else { %>
-                        <img src="<%= post.imageUrl %>" class="post-image">
-                    <% } %>
-                </div>
-            </div>
-
-            <p class="lead text-gray-700 text-xl mb-12 leading-relaxed">
-                <%= post.article %>
-            </p>
-
-            <hr>
-
-            <h4 class="text-2xl font-bold text-gray-800 mb-4">
-                <span class="text-indigo-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd" />
-                    </svg>
-                </span>
-                Comments (<%= post.comments.length %>)
-            </h4>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             
-            <ul class="list-group mb-8 border border-gray-200 rounded-lg overflow-hidden">
-                <% post.comments.forEach(c => { %>
-                    <li class="list-group-item px-6 py-4 bg-gray-50 hover:bg-white transition duration-200 border-b border-gray-200 last:border-b-0">
-                        <p class="mb-1 text-sm text-gray-500 font-semibold uppercase tracking-wider">
-                            <%= c.user %>
-                        </p>
-                        <p class="text-gray-800"><%= c.message %></p>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
                     </li>
-                <% }); %>
-            </ul>
-
-            <h5 class="text-xl font-semibold text-gray-800 mb-4">Leave a Comment</h5>
-            <form action="/photo/<%= post._id %>/comment" method="POST" class="p-6 border border-indigo-200 bg-indigo-50 rounded-lg">
-                <div class="mb-4">
-                    <input type="text" name="user" placeholder="Your Name" class="form-control focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 rounded-md py-2 px-3" required>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/Latest">
+                            <i class="bi bi-card-text me-1"></i> Latest News
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/current-affairs">
+                            <i class="bi bi-clock-history me-1"></i> Current Affairs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/headlines">
+                            <i class="bi bi-megaphone me-1"></i> Headlines
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="/photose">
+                            <i class="bi bi-images me-1"></i> Photo Gallery
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
+                    <a href="#" class="btn btn-outline-light">
+                        <i class="bi bi-person-circle me-1"></i> Account
+                    </a>
                 </div>
-                <div class="mb-4">
-                    <textarea name="message" class="form-control focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 rounded-md py-2 px-3" rows="3" placeholder="Write your comment..." required></textarea>
-                </div>
-                <button class="btn btn-success w-full py-2 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 shadow-md transition duration-300">
-                    Add Comment
-                </button>
-            </form>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Breadcrumb -->
+    <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb-custom">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/photose">Photo Gallery</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= post.title %></li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Photo Header -->
+    <div class="photo-header">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h1 class="photo-title"><%= post.title %></h1>
+                    
+                    <div class="photo-meta">
+                        <div class="meta-item">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Posted by <%= post.author || 'Anonymous' %></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-calendar3"></i>
+                            <span>
+                                <%= post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { 
+                                    weekday: 'long', 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                }) : 'Recently' %>
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-eye"></i>
+                            <span>1.5k views</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-heart"></i>
+                            <span>245 likes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-tags">
+                        <span class="tag">Photography</span>
+                        <span class="tag">Nature</span>
+                        <span class="tag">Landscape</span>
+                        <span class="tag">Art</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- Main Photo Content -->
+                <div class="col-lg-8">
+                    <!-- Photo Display -->
+                    <div class="photo-display">
+                        <div class="photo-container">
+                            <% if (post.imageFile) { %>
+                                <img src="<%= post.imageFile %>" alt="<%= post.title %>" class="photo-zoom" id="mainPhoto">
+                            <% } else if (post.imageUrl) { %>
+                                <img src="<%= post.imageUrl %>" alt="<%= post.title %>" class="photo-zoom" id="mainPhoto">
+                            <% } else { %>
+                                <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Default photo" class="photo-zoom" id="mainPhoto">
+                            <% } %>
+                            
+                            <div class="photo-controls">
+                                <a href="#" class="control-btn" id="downloadBtn" title="Download">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                                <a href="#" class="control-btn" id="fullscreenBtn" title="Fullscreen">
+                                    <i class="bi bi-arrows-fullscreen"></i>
+                                </a>
+                                <a href="#" class="control-btn" id="likeBtn" title="Like">
+                                    <i class="bi bi-heart"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="photo-info">
+                            <div class="photo-description">
+                                <%= post.article %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <a href="/photose" class="back-btn">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Gallery
+                        </a>
+                        
+                        <div class="photo-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="likeCount">245</span>
+                                <span class="stat-label">Likes</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number"><%= post.comments ? post.comments.length : 0 %></span>
+                                <span class="stat-label">Comments</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">1.5k</span>
+                                <span class="stat-label">Views</span>
+                            </div>
+                        </div>
+                        
+                        <div class="social-share">
+                            <span class="text-muted me-2">Share:</span>
+                            <a href="#" class="social-icon social-facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" class="social-icon social-twitter">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon social-pinterest">
+                                <i class="bi bi-pinterest"></i>
+                            </a>
+                            <a href="#" class="social-icon social-link" id="copyLinkBtn" title="Copy Link">
+                                <i class="bi bi-link-45deg"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section">
+                        <h3 class="section-title">
+                            Comments
+                            <span class="comment-count"><%= post.comments ? post.comments.length : 0 %></span>
+                        </h3>
+                        
+                        <!-- Comment List -->
+                        <div class="comment-list">
+                            <% if (post.comments && post.comments.length > 0) { %>
+                                <% post.comments.forEach(c => { %>
+                                <div class="comment-item">
+                                    <div class="comment-header">
+                                        <div class="comment-avatar">
+                                            <%= c.user ? c.user.charAt(0).toUpperCase() : 'U' %>
+                                        </div>
+                                        <div>
+                                            <div class="comment-author"><%= c.user || 'Anonymous' %></div>
+                                            <div class="comment-time">
+                                                <i class="bi bi-clock me-1"></i>
+                                                Just now
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-text">
+                                        <%= c.message %>
+                                    </div>
+                                </div>
+                                <% }) %>
+                            <% } else { %>
+                                <div class="no-comments">
+                                    <i class="bi bi-chat-square-text"></i>
+                                    <h4>No comments yet</h4>
+                                    <p>Be the first to share your thoughts!</p>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <!-- Comment Form -->
+                        <div class="comment-form">
+                            <h4 class="form-title">Leave a Comment</h4>
+                            <form action="/photo/<%= post._id %>/comment" method="POST" id="commentForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" 
+                                               class="form-control form-control-custom" 
+                                               name="user" 
+                                               placeholder="Your name" 
+                                               required>
+                                    </div>
+                                </div>
+                                <textarea class="form-control form-control-custom" 
+                                          name="message" 
+                                          rows="4" 
+                                          placeholder="Share your thoughts about this photo..." 
+                                          required></textarea>
+                                <button type="submit" class="btn-submit">
+                                    <i class="bi bi-send"></i>
+                                    Post Comment
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Photo Info Card -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="bi bi-info-circle me-2 text-primary"></i>
+                                Photo Information
+                            </h5>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Resolution:</span>
+                                    <span class="fw-medium">1920x1080</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">File Size:</span>
+                                    <span class="fw-medium">2.4 MB</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Format:</span>
+                                    <span class="fw-medium">JPEG</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Camera:</span>
+                                    <span class="fw-medium">Canon EOS R5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Photos -->
+                    <div class="related-section">
+                        <h5 class="section-title mb-4">Related Photos</h5>
+                        <div class="related-photos">
+                            <div class="related-photo">
+                                <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <div class="photo-overlay">
+                                    <small>Mountain Landscape</small>
+                                </div>
+                            </div>
+                            <div class="related-photo">
+                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <div class="photo-overlay">
+                                    <small>Ocean View</small>
+                                </div>
+                            </div>
+                            <div class="related-photo">
+                                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <div class="photo-overlay">
+                                    <small>Forest Path</small>
+                                </div>
+                            </div>
+                            <div class="related-photo">
+                                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <div class="photo-overlay">
+                                    <small>Sunset Colors</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Photo of the Day -->
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-body text-center">
+                            <i class="bi bi-trophy display-4 text-warning mb-3"></i>
+                            <h5 class="card-title">Photo of the Day</h5>
+                            <p class="card-text text-muted mb-3">
+                                This photo has been selected as today's featured image!
+                            </p>
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-award me-1"></i> View Award
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-white mb-3">NewsHub Photo Gallery</h5>
+                    <p class="text-white-50">
+                        Capturing moments, telling stories, and inspiring creativity through photography.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NewsHub. All rights reserved. | 
+                    <a href="#" class="text-white-50">Privacy Policy</a> | 
+                    <a href="#" class="text-white-50">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Image zoom functionality
+        const mainPhoto = document.getElementById('mainPhoto');
+        if (mainPhoto) {
+            mainPhoto.addEventListener('click', function() {
+                this.classList.toggle('zoomed');
+            });
+        }
+        
+        // Like functionality
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCount = document.getElementById('likeCount');
+        if (likeBtn) {
+            likeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const currentLikes = parseInt(likeCount.textContent);
+                const isLiked = this.classList.contains('liked');
+                
+                if (!isLiked) {
+                    likeCount.textContent = currentLikes + 1;
+                    this.classList.add('liked');
+                    this.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                    this.style.color = '#dc2626';
+                    
+                    // Show notification
+                    showNotification('Photo liked!');
+                } else {
+                    likeCount.textContent = currentLikes - 1;
+                    this.classList.remove('liked');
+                    this.innerHTML = '<i class="bi bi-heart"></i>';
+                    this.style.color = '';
+                    
+                    showNotification('Like removed');
+                }
+            });
+        }
+        
+        // Copy link functionality
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        if (copyLinkBtn) {
+            copyLinkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const currentUrl = window.location.href;
+                
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="bi bi-check2"></i>';
+                    this.style.background = '#059669';
+                    
+                    showNotification('Link copied to clipboard!');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.style.background = '';
+                    }, 2000);
+                });
+            });
+        }
+        
+        // Download functionality
+        const downloadBtn = document.getElementById('downloadBtn');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showNotification('Downloading photo...');
+                // In real implementation, trigger download
+                // window.location.href = mainPhoto.src;
+            });
+        }
+        
+        // Fullscreen functionality
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                    });
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            });
+        }
+        
+        // Comment form submission
+        const commentForm = document.getElementById('commentForm');
+        if (commentForm) {
+            commentForm.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('.btn-submit');
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Posting...';
+                    submitBtn.disabled = true;
+                    
+                    // Add spin animation
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .spin {
+                            animation: spin 1s linear infinite;
+                        }
+                        @keyframes spin {
+                            from { transform: rotate(0deg); }
+                            to { transform: rotate(360deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            });
+        }
+        
+        // Show notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'position-fixed top-0 end-0 p-3';
+            notification.style.zIndex = '9999';
+            notification.innerHTML = `
+                <div class="toast show" role="alert">
+                    <div class="toast-header bg-primary text-white">
+                        <strong class="me-auto">Notification</strong>
+                        <button type="button" class="btn-close btn-close-white" onclick="this.parentElement.parentElement.parentElement.remove()"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.parentElement.removeChild(notification);
+                }
+            }, 3000);
+        }
+        
+        // Related photo click
+        document.querySelectorAll('.related-photo').forEach(photo => {
+            photo.addEventListener('click', function() {
+                showNotification('Loading related photo...');
+                // In real implementation, navigate to related photo
+            });
+        });
+        
+        // Loading simulation for image
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        if (mainPhoto) {
+            mainPhoto.addEventListener('load', function() {
+                loadingOverlay.classList.remove('active');
+            });
+            
+            if (mainPhoto.complete) {
+                loadingOverlay.classList.remove('active');
+            } else {
+                loadingOverlay.classList.add('active');
+            }
+        }
+        
+        // Format article content
+        const photoDescription = document.querySelector('.photo-description');
+        if (photoDescription) {
+            const content = photoDescription.innerHTML;
+            const paragraphs = content.split('\n').filter(p => p.trim().length > 0);
+            let formattedContent = '';
+            
+            paragraphs.forEach(paragraph => {
+                if (paragraph.trim().length > 0) {
+                    formattedContent += `<p>${paragraph.trim()}</p>`;
+                }
+            });
+            
+            photoDescription.innerHTML = formattedContent;
+        }
+    </script>
 </body>
 </html>

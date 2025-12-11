@@ -1,36 +1,1028 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title><%= article.title %></title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title><%= article.title %> - NewsHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #dc2626;
+            --accent-color: #2563eb;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        /* Navigation Bar */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2d4a7c 100%);
+            box-shadow: var(--shadow-md);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: #fbbf24;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-custom {
+            background: transparent;
+            padding: 1.5rem 0 1rem;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-light);
+        }
+
+        /* Article Header */
+        .article-header {
+            background: white;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item i {
+            color: var(--accent-color);
+        }
+
+        .category-badge {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent-color);
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0 4rem;
+        }
+
+        /* Article Image */
+        .article-image {
+            margin-bottom: 2.5rem;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .article-image img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+        /* Article Content */
+        .article-content {
+            background: white;
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        .article-content p {
+            margin-bottom: 1.8rem;
+            color: var(--text-dark);
+        }
+
+        .article-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article-content h2, .article-content h3 {
+            font-family: 'Playfair Display', serif;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 2rem;
+            margin: 2rem 0;
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: var(--light-bg);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .social-share {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
+
+        .social-facebook { background: #3b5998; }
+        .social-twitter { background: #1da1f2; }
+        .social-whatsapp { background: #25d366; }
+        .social-linkedin { background: #0077b5; }
+
+        /* Author Section */
+        .author-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .author-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .author-info p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .author-bio {
+            color: var(--text-dark);
+            line-height: 1.7;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Related Articles */
+        .related-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .related-articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .related-card {
+            background: var(--light-bg);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .related-card:hover {
+            background: white;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+
+        .related-card h5 {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .related-meta {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2d4a7c 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .newsletter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+        }
+
+        .form-control-custom {
+            padding: 1rem;
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-subscribe {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-subscribe:hover {
+            background: #b91c1c;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .popular-articles {
+            list-style: none;
+            padding: 0;
+        }
+
+        .popular-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .popular-item:last-child {
+            border-bottom: none;
+        }
+
+        .popular-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            transition: color 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .popular-link:hover {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .popular-meta {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2.2rem;
+            }
+            
+            .article-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .article-content {
+                padding: 2rem;
+                font-size: 1rem;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .related-articles {
+                grid-template-columns: 1fr;
+            }
+            
+            .author-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .newsletter-section {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .article-header {
+                padding: 2rem 0;
+            }
+            
+            .article-title {
+                font-size: 1.8rem;
+            }
+            
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .form-control-custom, .btn-subscribe {
+                width: 100%;
+                border-radius: var(--radius-md);
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Content formatting */
+        .article-content ul, .article-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+        }
+
+        .highlight-box {
+            background: rgba(37, 99, 235, 0.05);
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: var(--radius-sm);
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-newspaper"></i> NewsHub
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="/Latest">
+                            <i class="bi bi-card-text me-1"></i> Latest News
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/current-affairs">
+                            <i class="bi bi-clock-history me-1"></i> Current Affairs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/headlines">
+                            <i class="bi bi-megaphone me-1"></i> Headlines
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/photose">
+                            <i class="bi bi-file-text me-1"></i> Articles
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
+                    <a href="#" class="btn btn-outline-light">
+                        <i class="bi bi-person-circle me-1"></i> Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<div class="container py-5">
-  <a href="/Latest" class="btn btn-outline-secondary mb-3">
-    ← Back to News
-  </a>
+    <!-- Breadcrumb -->
+    <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb-custom">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/Latest">Latest News</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= article.title %></li>
+            </ol>
+        </nav>
+    </div>
 
-  <span class="badge bg-secondary mb-2">
-    <%= article.category %>
-  </span>
+    <!-- Article Header -->
+    <div class="article-header">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <span class="category-badge"><%= article.category || 'General' %></span>
+                    <h1 class="article-title"><%= article.title %></h1>
+                    
+                    <div class="article-meta">
+                        <div class="meta-item">
+                            <i class="bi bi-person-circle"></i>
+                            <span>By <%= article.author || 'NewsHub Staff' %></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-calendar3"></i>
+                            <span>
+                                <%= article.createdAt ? new Date(article.createdAt).toLocaleDateString('en-US', { 
+                                    weekday: 'long', 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                }) : new Date().toLocaleDateString() %>
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-clock"></i>
+                            <span>
+                                <%= Math.ceil(article.content ? article.content.length / 500 : 5) %> min read
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-eye"></i>
+                            <span>1.5k views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <h1 class="mb-3">
-    <%= article.title %>
-  </h1>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- Main Article Content -->
+                <div class="col-lg-8">
+                    <!-- Article Image -->
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="<%= article.title %>">
+                    </div>
 
-  <p class="text-muted">
-    By <%= article.author %> •
-    <%= new Date(article.createdAt).toDateString() %>
-  </p>
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <a href="/Latest" class="back-btn">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to News
+                        </a>
+                        
+                        <div class="social-share">
+                            <span class="text-muted me-2">Share:</span>
+                            <a href="#" class="social-icon social-facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" class="social-icon social-twitter">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon social-whatsapp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="#" class="social-icon social-linkedin">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
 
-  <hr>
+                    <!-- Article Content -->
+                    <div class="article-content">
+                        <%= article.content %>
+                    </div>
 
-  <p style="white-space: pre-line;">
-    <%= article.content %>
-  </p>
+                    <!-- Author Section -->
+                    <div class="author-section">
+                        <div class="author-header">
+                            <div class="author-avatar">
+                                <%= article.author ? article.author.charAt(0).toUpperCase() : 'N' %>
+                            </div>
+                            <div class="author-info">
+                                <h4><%= article.author || 'NewsHub Editorial Team' %></h4>
+                                <p>Senior News Correspondent</p>
+                            </div>
+                        </div>
+                        <div class="author-bio">
+                            <p>
+                                With over 10 years of experience in journalism, <%= article.author || 'our team' %> 
+                                specializes in delivering accurate and timely news coverage. 
+                                Committed to journalistic integrity and comprehensive reporting.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-</div>
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <!-- Popular Articles -->
+                        <div class="sidebar-card">
+                            <h4 class="sidebar-title">Popular Articles</h4>
+                            <ul class="popular-articles">
+                                <li class="popular-item">
+                                    <a href="#" class="popular-link">Global Economic Forecast 2025: What to Expect</a>
+                                    <div class="popular-meta">
+                                        <span><i class="bi bi-clock"></i> 2h ago</span>
+                                        <span><i class="bi bi-eye"></i> 2.5k</span>
+                                    </div>
+                                </li>
+                                <li class="popular-item">
+                                    <a href="#" class="popular-link">Technology Innovations Changing Healthcare</a>
+                                    <div class="popular-meta">
+                                        <span><i class="bi bi-clock"></i> 5h ago</span>
+                                        <span><i class="bi bi-eye"></i> 3.1k</span>
+                                    </div>
+                                </li>
+                                <li class="popular-item">
+                                    <a href="#" class="popular-link">Environmental Policies: Latest Developments</a>
+                                    <div class="popular-meta">
+                                        <span><i class="bi bi-clock"></i> 1d ago</span>
+                                        <span><i class="bi bi-eye"></i> 4.2k</span>
+                                    </div>
+                                </li>
+                                <li class="popular-item">
+                                    <a href="#" class="popular-link">Sports Industry Trends for Next Season</a>
+                                    <div class="popular-meta">
+                                        <span><i class="bi bi-clock"></i> 1d ago</span>
+                                        <span><i class="bi bi-eye"></i> 1.8k</span>
+                                    </div>
+                                </li>
+                                <li class="popular-item">
+                                    <a href="#" class="popular-link">Education Reforms: What Parents Need to Know</a>
+                                    <div class="popular-meta">
+                                        <span><i class="bi bi-clock"></i> 2d ago</span>
+                                        <span><i class="bi bi-eye"></i> 2.7k</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
+                        <!-- Categories -->
+                        <div class="sidebar-card">
+                            <h4 class="sidebar-title">Categories</h4>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-primary p-2 mb-2">Politics</span>
+                                <span class="badge bg-success p-2 mb-2">Business</span>
+                                <span class="badge bg-info p-2 mb-2">Technology</span>
+                                <span class="badge bg-warning p-2 mb-2">Health</span>
+                                <span class="badge bg-danger p-2 mb-2">Sports</span>
+                                <span class="badge bg-secondary p-2 mb-2">Entertainment</span>
+                                <span class="badge bg-dark p-2 mb-2">Science</span>
+                                <span class="badge bg-purple p-2 mb-2">Education</span>
+                            </div>
+                        </div>
+
+                        <!-- Newsletter -->
+                        <div class="sidebar-card">
+                            <h4 class="sidebar-title">Stay Updated</h4>
+                            <p class="mb-3">Get daily news updates delivered to your inbox.</p>
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" placeholder="Your email">
+                                <button class="btn btn-primary" type="button">Subscribe</button>
+                            </div>
+                            <small class="text-muted">We respect your privacy. Unsubscribe at any time.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Articles -->
+            <div class="related-section">
+                <h3 class="section-title">Related Articles</h3>
+                <div class="related-articles">
+                    <div class="related-card">
+                        <h5>Similar Developments in Related Fields</h5>
+                        <p class="text-muted small">Analysis of similar news developments and their impact on related sectors.</p>
+                        <div class="related-meta">
+                            <span><i class="bi bi-clock"></i> 3h ago</span>
+                            <span><i class="bi bi-eye"></i> 1.2k</span>
+                        </div>
+                    </div>
+                    <div class="related-card">
+                        <h5>Expert Opinions and Analysis</h5>
+                        <p class="text-muted small">Industry experts weigh in with their perspectives on current developments.</p>
+                        <div class="related-meta">
+                            <span><i class="bi bi-clock"></i> 1d ago</span>
+                            <span><i class="bi bi-eye"></i> 2.8k</span>
+                        </div>
+                    </div>
+                    <div class="related-card">
+                        <h5>Historical Context and Background</h5>
+                        <p class="text-muted small">Understanding the historical context behind current news events.</p>
+                        <div class="related-meta">
+                            <span><i class="bi bi-clock"></i> 2d ago</span>
+                            <span><i class="bi bi-eye"></i> 1.5k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="newsletter-section">
+                <h3 class="newsletter-title">Never Miss Important News</h3>
+                <p>Subscribe to our newsletter and get the most important stories delivered directly to your inbox.</p>
+                
+                <form class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control form-control-custom" placeholder="Your email address" required>
+                        <button class="btn btn-subscribe" type="submit">Subscribe</button>
+                    </div>
+                    <small class="mt-2 d-block">By subscribing, you agree to our Privacy Policy</small>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-white mb-3">NewsHub</h5>
+                    <p class="text-white-50">Your trusted source for accurate and timely news from around the world.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NewsHub. All rights reserved. | 
+                    <a href="#" class="text-white-50">Privacy Policy</a> | 
+                    <a href="#" class="text-white-50">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Share buttons functionality
+        document.querySelectorAll('.social-icon').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = window.location.href;
+                const title = document.querySelector('.article-title').textContent;
+                
+                if (this.classList.contains('social-facebook')) {
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                } else if (this.classList.contains('social-twitter')) {
+                    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank');
+                } else if (this.classList.contains('social-whatsapp')) {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`, '_blank');
+                } else if (this.classList.contains('social-linkedin')) {
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                }
+            });
+        });
+        
+        // Format article content paragraphs
+        const articleContent = document.querySelector('.article-content');
+        if (articleContent) {
+            const content = articleContent.innerHTML;
+            
+            // Replace newlines with paragraphs
+            const paragraphs = content.split('\n').filter(p => p.trim().length > 0);
+            let formattedContent = '';
+            
+            paragraphs.forEach(paragraph => {
+                if (paragraph.trim().length > 0) {
+                    formattedContent += `<p>${paragraph.trim()}</p>`;
+                }
+            });
+            
+            articleContent.innerHTML = formattedContent;
+            
+            // Add highlight boxes for important paragraphs
+            const ps = articleContent.querySelectorAll('p');
+            ps.forEach((p, index) => {
+                if (p.textContent.length > 100 && index % 4 === 0) {
+                    p.classList.add('highlight-box');
+                }
+            });
+        }
+        
+        // Newsletter form submission
+        document.querySelector('.newsletter-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            if (email) {
+                alert(`Thank you for subscribing with: ${email}`);
+                this.reset();
+            }
+        });
+        
+        // Reading progress indicator
+        const updateReadingProgress = () => {
+            const winHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            const trackLength = docHeight - winHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (trackLength > 0) {
+                const progress = Math.floor((scrollTop / trackLength) * 100);
+                
+                let progressBar = document.querySelector('.reading-progress');
+                if (!progressBar) {
+                    progressBar = document.createElement('div');
+                    progressBar.className = 'reading-progress';
+                    progressBar.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: ${progress}%;
+                        height: 3px;
+                        background: var(--accent-color);
+                        z-index: 9999;
+                        transition: width 0.3s ease;
+                    `;
+                    document.body.appendChild(progressBar);
+                } else {
+                    progressBar.style.width = `${progress}%`;
+                }
+            }
+        };
+        
+        window.addEventListener('scroll', updateReadingProgress);
+        window.addEventListener('resize', updateReadingProgress);
+        updateReadingProgress();
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

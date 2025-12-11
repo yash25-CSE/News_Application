@@ -1,57 +1,991 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title><%= affair.headline %></title>
+    <meta charset="UTF-8">
+    <title><%= affair.headline %> | NewsHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #dc2626;
+            --accent-color: #2563eb;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        /* Navigation Bar */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2d4a7c 100%);
+            box-shadow: var(--shadow-md);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: #fbbf24;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-custom {
+            background: transparent;
+            padding: 1.5rem 0 1rem;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-light);
+        }
+
+        /* Article Header */
+        .article-header {
+            background: white;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item i {
+            color: var(--accent-color);
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent-color);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0 4rem;
+        }
+
+        /* Article Image/Video */
+        .media-container {
+            margin-bottom: 2.5rem;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: cover;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Article Content */
+        .article-content {
+            background: white;
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .article-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .like-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .like-btn:hover {
+            background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(30, 64, 175, 0.2);
+            color: white;
+        }
+
+        .like-count {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .social-share {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
+
+        .social-facebook { background: #3b5998; }
+        .social-twitter { background: #1da1f2; }
+        .social-whatsapp { background: #25d366; }
+        .social-linkedin { background: #0077b5; }
+
+        /* Comments Section */
+        .comments-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .comment-count {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Comment List */
+        .comment-list {
+            margin-bottom: 2.5rem;
+        }
+
+        .comment-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .comment-item:hover {
+            background: var(--light-bg);
+            border-radius: var(--radius-md);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .comment-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+        }
+
+        .comment-time {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .comment-text {
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-left: 4rem;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .no-comments i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        /* Comment Form */
+        .comment-form {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .form-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control-custom {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--success-color), #10b981);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(5, 150, 105, 0.2);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .related-articles {
+            list-style: none;
+            padding: 0;
+        }
+
+        .related-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .related-item:last-child {
+            border-bottom: none;
+        }
+
+        .related-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            transition: color 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .related-link:hover {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .related-meta {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 auto 1rem;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .author-bio {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2.2rem;
+            }
+            
+            .article-content {
+                padding: 2rem;
+                font-size: 1rem;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .comments-section {
+                padding: 1.5rem;
+            }
+            
+            .comment-text {
+                padding-left: 0;
+            }
+            
+            .comment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .comment-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .article-header {
+                padding: 2rem 0;
+            }
+            
+            .article-title {
+                font-size: 1.8rem;
+            }
+            
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+    </style>
 </head>
-
-<body class="bg-light">
-
-<div class="container mt-4">
-
-    <h1 class="fw-bold"><%= affair.headline %></h1>
-
-    <!-- IMAGE -->
-    <% if (affair.imageUrl) { %>
-        <img src="<%= affair.imageUrl %>" class="img-fluid mb-4 rounded">
-    <% } %>
-
-    <!-- VIDEO -->
-    <% if (affair.videoUrl) { %>
-    <div class="ratio ratio-16x9 mb-4">
-        <iframe src="<%= affair.videoUrl.replace('watch?v=', 'embed/') %>" allowfullscreen></iframe>
-    </div>
-    <% } %>
-
-    <p class="fs-5"><%= affair.article %></p>
-
-    <hr>
-
-    <!-- LIKE BUTTON -->
-    <form action="/current-affairs/<%= affair._id %>/like" method="POST">
-        <button class="btn btn-outline-primary">
-            👍 Like (<%= affair.likes %>)
-        </button>
-    </form>
-
-    <hr>
-
-    <!-- COMMENTS -->
-    <h4>Comments</h4>
-    <% affair.comments.forEach(c => { %>
-        <div class="p-3 bg-white rounded mb-2 shadow-sm">
-            <strong><%= c.username %></strong>
-            <p><%= c.comment %></p>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-newspaper"></i> NewsHub
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/Latest">
+                            <i class="bi bi-card-text me-1"></i> Latest News
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="/current-affairs">
+                            <i class="bi bi-clock-history me-1"></i> Current Affairs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/videos">
+                            <i class="bi bi-camera-video me-1"></i> Videos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="/photose">
+                            <i class="bi bi-file-text me-1"></i> Articles
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
+                    <a href="#" class="btn btn-outline-light">
+                        <i class="bi bi-person-circle me-1"></i> Account
+                    </a>
+                </div>
+            </div>
         </div>
-    <% }) %>
+    </nav>
 
-    <form action="/current-affairs/<%= affair._id %>/comment" method="POST">
-        <input class="form-control my-2" name="username" placeholder="Your name" required>
-        <textarea class="form-control mb-2" name="comment" placeholder="Write a comment..." required></textarea>
-        <button class="btn btn-success">Post Comment</button>
-    </form>
+    <!-- Breadcrumb -->
+    <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb-custom">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/current-affairs">Current Affairs</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= affair.headline %></li>
+            </ol>
+        </nav>
+    </div>
 
-</div>
+    <!-- Article Header -->
+    <div class="article-header">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h1 class="article-title"><%= affair.headline %></h1>
+                    
+                    <div class="article-meta">
+                        <div class="meta-item">
+                            <i class="bi bi-calendar3"></i>
+                            <span><%= new Date().toLocaleDateString('en-US', { 
+                                weekday: 'long', 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            }) %></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-clock"></i>
+                            <span>5 min read</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-eye"></i>
+                            <span>1.2k views</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-chat-left-text"></i>
+                            <span><%= affair.comments ? affair.comments.length : 0 %> comments</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-tags">
+                        <a href="#" class="tag">Current Affairs</a>
+                        <a href="#" class="tag">Breaking News</a>
+                        <a href="#" class="tag">Politics</a>
+                        <a href="#" class="tag">National</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- Main Article Content -->
+                <div class="col-lg-8">
+                    <!-- Media Container -->
+                    <% if (affair.imageUrl) { %>
+                        <div class="media-container">
+                            <img src="<%= affair.imageUrl %>" alt="<%= affair.headline %>" class="article-image">
+                        </div>
+                    <% } %>
+
+                    <% if (affair.videoUrl) { %>
+                        <div class="media-container">
+                            <div class="video-container">
+                                <iframe src="<%= affair.videoUrl.replace('watch?v=', 'embed/') %>" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Article Content -->
+                    <div class="article-content">
+                        <p><%= affair.article %></p>
+                    </div>
+
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <form action="/current-affairs/<%= affair._id %>/like" method="POST" style="margin: 0;">
+                            <button type="submit" class="like-btn">
+                                <i class="bi bi-hand-thumbs-up"></i>
+                                Like This Article
+                                <span class="like-count"><%= affair.likes || 0 %></span>
+                            </button>
+                        </form>
+                        
+                        <div class="social-share">
+                            <span class="text-muted me-2">Share:</span>
+                            <a href="#" class="social-icon social-facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" class="social-icon social-twitter">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon social-whatsapp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="#" class="social-icon social-linkedin">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section">
+                        <h3 class="section-title">
+                            Comments
+                            <span class="comment-count"><%= affair.comments ? affair.comments.length : 0 %></span>
+                        </h3>
+                        
+                        <!-- Comment List -->
+                        <div class="comment-list">
+                            <% if (affair.comments && affair.comments.length > 0) { %>
+                                <% affair.comments.forEach(c => { %>
+                                <div class="comment-item">
+                                    <div class="comment-header">
+                                        <div class="comment-avatar">
+                                            <%= c.username ? c.username.charAt(0).toUpperCase() : 'U' %>
+                                        </div>
+                                        <div>
+                                            <div class="comment-author"><%= c.username || 'Anonymous' %></div>
+                                            <div class="comment-time">
+                                                <i class="bi bi-clock me-1"></i>
+                                                Just now
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-text">
+                                        <%= c.comment %>
+                                    </div>
+                                </div>
+                                <% }) %>
+                            <% } else { %>
+                                <div class="no-comments">
+                                    <i class="bi bi-chat-square-text"></i>
+                                    <h4>No comments yet</h4>
+                                    <p>Be the first to share your thoughts!</p>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <!-- Comment Form -->
+                        <div class="comment-form">
+                            <h4 class="form-title">Leave a Comment</h4>
+                            <form action="/current-affairs/<%= affair._id %>/comment" method="POST">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" 
+                                               class="form-control form-control-custom" 
+                                               name="username" 
+                                               placeholder="Your name" 
+                                               required>
+                                    </div>
+                                </div>
+                                <textarea class="form-control form-control-custom" 
+                                          name="comment" 
+                                          rows="5" 
+                                          placeholder="Share your thoughts..." 
+                                          required></textarea>
+                                <button type="submit" class="btn-submit">
+                                    <i class="bi bi-send"></i>
+                                    Post Comment
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <!-- Related Articles -->
+                        <div class="sidebar-card">
+                            <h4 class="sidebar-title">Related Articles</h4>
+                            <ul class="related-articles">
+                                <li class="related-item">
+                                    <a href="#" class="related-link">Global Economic Summit 2025: Key Takeaways</a>
+                                    <div class="related-meta">
+                                        <span><i class="bi bi-clock"></i> 2h ago</span>
+                                    </div>
+                                </li>
+                                <li class="related-item">
+                                    <a href="#" class="related-link">New Environmental Policies Announced</a>
+                                    <div class="related-meta">
+                                        <span><i class="bi bi-clock"></i> 1d ago</span>
+                                    </div>
+                                </li>
+                                <li class="related-item">
+                                    <a href="#" class="related-link">Technology Advancements in Renewable Energy</a>
+                                    <div class="related-meta">
+                                        <span><i class="bi bi-clock"></i> 2d ago</span>
+                                    </div>
+                                </li>
+                                <li class="related-item">
+                                    <a href="#" class="related-link">Healthcare Reforms: What You Need to Know</a>
+                                    <div class="related-meta">
+                                        <span><i class="bi bi-clock"></i> 3d ago</span>
+                                    </div>
+                                </li>
+                                <li class="related-item">
+                                    <a href="#" class="related-link">International Relations Update</a>
+                                    <div class="related-meta">
+                                        <span><i class="bi bi-clock"></i> 4d ago</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Author Card -->
+                        <div class="sidebar-card author-card">
+                            <div class="author-avatar">N</div>
+                            <h5 class="author-name">NewsHub Editorial</h5>
+                            <p class="author-bio">
+                                Our editorial team brings you the latest and most accurate current affairs from around the world. Stay informed with our comprehensive coverage.
+                            </p>
+                        </div>
+
+                        <!-- Newsletter -->
+                        <div class="sidebar-card">
+                            <h4 class="sidebar-title">Stay Updated</h4>
+                            <p class="mb-3">Get daily current affairs delivered to your inbox.</p>
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" placeholder="Your email">
+                                <button class="btn btn-primary" type="button">Subscribe</button>
+                            </div>
+                            <small class="text-muted">We respect your privacy. Unsubscribe at any time.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-white mb-3">NewsHub</h5>
+                    <p class="text-white-50">Your trusted source for current affairs and breaking news from around the world.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NewsHub. All rights reserved. | <a href="#" class="text-white-50">Privacy Policy</a> | <a href="#" class="text-white-50">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Like button animation
+        const likeBtn = document.querySelector('.like-btn');
+        likeBtn.addEventListener('click', function(e) {
+            const form = this.closest('form');
+            if (form) {
+                // Add loading state
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Liking...';
+                this.disabled = true;
+                
+                // Submit form after animation
+                setTimeout(() => {
+                    form.submit();
+                }, 500);
+            }
+        });
+        
+        // Comment form submission
+        const commentForm = document.querySelector('.comment-form form');
+        commentForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('.btn-submit');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Posting...';
+                submitBtn.disabled = true;
+            }
+        });
+        
+        // Add spin animation to icons
+        const style = document.createElement('style');
+        style.textContent = `
+            .spin {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Share buttons functionality
+        document.querySelectorAll('.social-icon').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = window.location.href;
+                const title = document.querySelector('.article-title').textContent;
+                
+                if (this.classList.contains('social-facebook')) {
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                } else if (this.classList.contains('social-twitter')) {
+                    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank');
+                } else if (this.classList.contains('social-whatsapp')) {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`, '_blank');
+                } else if (this.classList.contains('social-linkedin')) {
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                }
+            });
+        });
+        
+        // Scroll to comments when clicking on comment count
+        document.querySelector('.comment-count')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.comments-section')?.scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        });
+    </script>
 </body>
 </html>
