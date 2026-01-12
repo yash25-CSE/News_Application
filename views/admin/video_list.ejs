@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage Videos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+  <h2 class="mb-4">📹 All Video Posts</h2>
+
+  <a href="/admin/upload_video" class="btn btn-success mb-3">➕ Upload New Video</a>
+
+  <% if (!videos || videos.length === 0) { %>
+    <div class="alert alert-warning">No videos found.</div>
+  <% } else { %>
+
+    <table class="table table-bordered bg-white shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Headline</th>
+          <th>Preview</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% videos.forEach(video => { %>
+          <tr>
+            <td><%= video.headline %></td>
+
+            <td>
+              <iframe width="160" height="90"
+                src="<%= video.videoUrl.replace('watch?v=', 'embed/') %>"
+                allowfullscreen>
+              </iframe>
+            </td>
+
+            <td>
+              <span class="badge <%= video.status === 'published' ? 'bg-success' : 'bg-secondary' %>">
+                <%= video.status %>
+              </span>
+            </td>
+
+            <td>
+              <a href="/admin/videos/delete/<%= video._id %>"
+                 class="btn btn-danger btn-sm"
+                 onclick="return confirm('Delete this video?')">
+                🗑 Delete
+              </a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+  <% } %>
+</div>
+
+</body>
+</html>

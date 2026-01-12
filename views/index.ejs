@@ -4,135 +4,255 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News App Selection</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #007bff; /* Blue */
-            --admin-color: #dc3545; /* Red */
-            --user-color: #28a745;  /* Green */
-            --bg-color: #f8f9fa;
+            --primary-blue: #0066FF;
+            --accent-green: #28a745;
+            --bg-light: #F0F2F5;
+            --card-white: #FFFFFF;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-light);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-        }
-
-        .selection-card {
-            border-radius: 15px;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            cursor: pointer;
-            overflow: hidden;
-            border: none;
-            height: 350px; /* Fixed height for consistency */
+            font-family: 'Outfit', sans-serif;
+            color: #1a1a1a;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            margin: 0;
+            padding-bottom: 80px; /* Space for mobile footer */
+        }
+
+
+        /* App-Style Header */
+        .creative-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 15px 0;
+        }
+
+        .app-logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        /* App-Card Styling */
+        .selection-card {
+            background: var(--card-white);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
         }
 
         .selection-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        .admin-card {
-            background: linear-gradient(135deg, #f8d7da, var(--admin-color));
-            color: white;
+        .selection-card::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            width: 120px;
+            height: 120px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.5;
         }
 
-        .user-card {
-            background: linear-gradient(135deg, #d4edda, var(--user-color));
+        /* News Badge Style */
+        .live-badge {
+            background: #ff4b2b;
             color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
 
         .icon-large {
             font-size: 4rem;
-            margin-bottom: 15px;
+            z-index: 1;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
         }
 
         .card-title {
             font-weight: 700;
-            font-size: 1.8rem;
+            font-size: 2rem;
+            color: #111;
+            z-index: 1;
         }
 
         .card-text {
+            color: #666;
             font-size: 1rem;
-            opacity: 0.9;
+            line-height: 1.5;
+            z-index: 1;
+        }
+
+        .btn-news {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            width: 100%;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.2);
+        }
+
+        .btn-news:hover {
+            background: #0052cc;
+            transform: scale(1.02);
+            color: white;
+        }
+
+        /* Mobile-Type Sticky Footer */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            padding: 15px;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .footer-item {
+            text-align: center;
+            color: #999;
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer-item.active {
+            color: var(--primary-blue);
+        }
+
+        .footer-icon {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 2px;
         }
     </style>
 </head>
 <body>
 
-    <%- include('./Layoutes/navbar') %>
+<!-- Navbar Include -->
+<%- include('Layoutes/navbar') %>
 
-<div class="container mt-5 pt-5">
-    <div class="row justify-content-center">
-        <div class="col-12 text-center mb-5">
-            <h1 class="display-4 fw-bold text-dark">Welcome to the News Application</h1>
-            <p class="lead text-secondary">Please select your role to proceed.</p>
-        </div>
-
-        <div class="col-md-5 mb-4">
-            <div id="adminCard" class="selection-card admin-card p-4 shadow-lg" data-target-url="/admin/login">   <!-- Added id for easier JS targeting -->
-                <div class="icon-large">
-                    <span class="d-block" style="font-size: 4rem;">⚙️</span>
-                </div>
-                <h2 class="card-title">Admin Side</h2>
-                <p class="card-text">Manage content, users, settings, and application configuration. This area is restricted.</p>
-                <button class="btn btn-outline-light mt-3 fw-bold" onclick="goToPage('adminCard')">Go to Admin</button>
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center mt-4 mb-5">
+                <h1 class="display-5 fw-bold" style="letter-spacing: -2px;">Welcome</h1>
+                <p class="text-muted">Stay updated with the latest headlines today.</p>
             </div>
-        </div>
 
-        <div class="col-md-5 mb-4">
-            <div id="userCard" class="selection-card user-card p-4 shadow-lg" data-target-url="/news">    <!-- Added id for easier JS targeting -->
-                <div class="icon-large">
-                    <span class="d-block" style="font-size: 4rem;">📰</span>
+            <div class="col-md-5 mb-5">
+                <div id="userCard" class="selection-card p-4" data-target-url="/news">
+                    <div>
+                        <span class="live-badge">Live Updates</span>
+                        <div class="icon-large mt-2">🗞️</div>
+                        <h2 class="card-title mt-3">Reader Mode</h2>
+                        <p class="card-text">Access breaking news, daily digests, and personalized stories tailored just for you.</p>
+                    </div>
+                    
+                    <button class="btn btn-news" onclick="goToPage('userCard')">
+                        Start Reading
+                    </button>
                 </div>
-                <h2 class="card-title">User Side</h2>
-                <p class="card-text">Browse the latest news, read articles, and customize your feed. This is the main application.</p>
-                <button class="btn btn-outline-light mt-3 fw-bold" onclick="goToPage('userCard')">Go to News Feed</button>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <footer class="app-footer d-md-none">
+        <a href="#" class="footer-item active">
+            <span class="footer-icon">🏠</span>
+            Home
+        </a>
+        <a href="#" class="footer-item">
+            <span class="footer-icon">🔍</span>
+            Explore
+        </a>
+        <a href="#" class="footer-item" onclick="goToPage('userCard')">
+            <span class="footer-icon">📰</span>
+            News
+        </a>
+        <a href="/admin/login" class="footer-item">
+            <span class="footer-icon">👤</span>
+            Profile
+        </a>
+    </footer>
 
-<script>
-    // 
-    function goToPage(cardId) {
-        const card = document.getElementById(cardId);
-        const targetUrl = card.getAttribute('data-target-url');
+    <footer class="container d-none d-md-block text-center mt-5 mb-4 text-muted">
+        <hr class="mb-4 opacity-10">
+        <p class="small">&copy; 2024 Samachar News Application • Designed for clarity.</p>
+    </footer>
 
-        // Optional: Add a simple confirmation or tracking before redirecting
-        console.log('Redirecting to:', targetUrl);
-
-        // In a real application, you might do an AJAX call or check authentication here.
-        // For this example, we'll just redirect.
-        window.location.href = targetUrl;
-    }
-
-    // Optional: Make the entire card clickable (not just the button)
-    document.getElementById('adminCard').addEventListener('click', function(event) {
-        // Prevent button click from triggering card click twice
-        if (event.target.tagName !== 'BUTTON') {
-            goToPage('adminCard');
+    <script>
+        function goToPage(cardId) {
+            const card = document.getElementById(cardId);
+            const targetUrl = card.getAttribute('data-target-url');
+            window.location.href = targetUrl;
         }
-    });
 
-    document.getElementById('userCard').addEventListener('click', function(event) {
-        // Prevent button click from triggering card click twice
-        if (event.target.tagName !== 'BUTTON') {
-            goToPage('userCard');
-        }
-    });
-</script>
+        document.getElementById('userCard').addEventListener('click', function(event) {
+            if (event.target.tagName !== 'BUTTON') {
+                goToPage('userCard');
+            }
+        });
 
+        // Intersection Observer for scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.selection-card').forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>

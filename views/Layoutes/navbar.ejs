@@ -3,60 +3,563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samachar App Navbar</title>
+    <title>Samachar App - News Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styling for a subtle, creative shadow/border effect */
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
         .creative-nav {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            border-bottom: 1px solid #f3f4f6; /* Light gray border for separation */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .creative-nav.scrolled {
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.99);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+        
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+        
+        .hamburger-line {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        .search-bar {
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar.expanded {
+            width: 300px;
+        }
+        
+        @media (max-width: 640px) {
+            .search-bar.expanded {
+                width: 200px;
+            }
+        }
+        
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .mobile-dropdown-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .mobile-dropdown-menu.open {
+            max-height: 300px;
+        }
+        
+        .dark-mode-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .dark-mode-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .dark-mode-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            border-radius: 34px;
+            transition: .4s;
+        }
+        
+        .dark-mode-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+        
+        input:checked + .dark-mode-slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .dark-mode-slider:before {
+            transform: translateX(30px);
         }
     </style>
 </head>
-<body>
-
-    <nav class="creative-nav w-full bg-white fixed top-0 z-50 mb-5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-            <div class="flex justify-center h-24">
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="creative-nav w-full fixed top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Desktop Navbar -->
+            <div class="hidden md:flex items-center justify-between h-20">
+                <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="#" class="flex-shrink-0">
-                        <img class="h-24 w-auto" src="/uploads/images/logo.png" alt="Samachar App Logo">
+                    <a href="/" class="flex-shrink-0">
+                        <img style="height: 65.5px" class=" w-auto transition-transform duration-300 hover:scale-105" src="/uploads/images/logo.png" alt="Samachar App Logo">
+                    </a>
+
+                </div>
+
+                <!-- Desktop Navigation Links 
+                <div class="flex items-center space-x-1 lg:space-x-3">
+                    <a href="/" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium active">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </a>
+
+                    <a href="/about" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium">
+                        <i class="fas fa-info-circle mr-1"></i> About
                     </a>
                 </div>
 
-                <div class="absolute right-4 top-0 h-full flex items-center">
-                    <button class="text-gray-600 hover:text-red-600 p-2 rounded-full transition duration-300">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </button>
+                -->
+
+                <!-- Desktop Right Side Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search Bar -->
+                    <div class="relative hidden lg:block">
+                        <div class="search-bar flex items-center bg-gray-100 rounded-full px-4 py-2 w-48 focus-within:w-64 transition-all duration-300">
+                            <i class="fas fa-search text-gray-400"></i>
+                            <input type="text" placeholder="Search news..." class="bg-transparent border-none outline-none pl-3 w-full text-gray-700 placeholder-gray-400">
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button id="notificationBtn" class="p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="notification-dot"></span>
+                        </button>
+                    </div>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <div class="hidden lg:flex items-center">
+                        <label class="dark-mode-toggle">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="dark-mode-slider">
+                                <i class="fas fa-sun absolute left-1.5 top-1.5 text-yellow-500 text-xs"></i>
+                                <i class="fas fa-moon absolute right-1.5 top-1.5 text-gray-300 text-xs"></i>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <!-- Admin Login Button -->
+                    <a href="/admin/login" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center">
+                        <i class="fas fa-user-shield mr-2"></i> Admin Login
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Navbar -->
+            <div class="md:hidden">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Mobile Logo -->
+                    <div class="flex items-center">
+                        <a href="/" class="flex-shrink-0">
+                            <img class="h-12 w-auto" src="/uploads/images/logo.png" alt="Samachar App Logo">
+                        </a>
+
+                    </div>
+
+                    <!-- Mobile Right Side Icons -->
+                    <div class="flex items-center space-x-3">
+                        <!-- Mobile Search Button -->
+                        <button id="mobileSearchBtn" class="p-2 rounded-full hover:bg-gray-100 text-gray-600">
+                            <i class="fas fa-search text-lg"></i>
+                        </button>
+                        
+                        <!-- Mobile Notifications -->
+                        <button id="mobileNotificationBtn" class="p-2 rounded-full hover:bg-gray-100 text-gray-600 relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="notification-dot"></span>
+                        </button>
+                        
+                        <!-- Mobile Hamburger Menu -->
+                        <button id="mobileMenuBtn" class="hamburger p-2 rounded-lg hover:bg-gray-100 text-gray-700 focus:outline-none">
+                            <div class="hamburger-line w-6 h-0.5 bg-gray-700 mb-1.5"></div>
+                            <div class="hamburger-line w-6 h-0.5 bg-gray-700 mb-1.5"></div>
+                            <div class="hamburger-line w-6 h-0.5 bg-gray-700"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Search Bar -->
+                <div id="mobileSearchBar" class="mt-2 hidden">
+                    <div class="flex items-center bg-gray-100 rounded-full px-4 py-3">
+                        <i class="fas fa-search text-gray-400"></i>
+                        <input type="text" placeholder="Search for news, topics..." class="bg-transparent border-none outline-none pl-3 w-full text-gray-700 placeholder-gray-400">
+                        <button id="closeMobileSearch" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div id="mobileMenu" class="mobile-menu mt-2">
+                    <div class="py-4 space-y-1 border-t border-gray-100">
+                        <a href="/" class="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg flex items-center">
+                            <i class="fas fa-home mr-3 text-blue-500 w-5"></i> Home
+                        </a>
+                        
+                        <!-- Mobile Categories Dropdown -->
+                        <div class="px-4">
+                            <button id="mobileCategoriesBtn" class="w-full flex items-center justify-between py-3 text-base font-medium text-gray-700 hover:text-blue-600">
+                                <div class="flex items-center">
+                                    <i class="fas fa-th-large mr-3 text-purple-500 w-5"></i> Categories
+                                </div>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div id="mobileCategoriesMenu" class="mobile-dropdown-menu pl-8">
+                                <a href="/category/politics" class="block py-2 text-sm text-gray-600 hover:text-blue-600">Politics</a>
+                                <a href="/category/business" class="block py-2 text-sm text-gray-600 hover:text-blue-600">Business</a>
+                                <a href="/category/technology" class="block py-2 text-sm text-gray-600 hover:text-blue-600">Technology</a>
+                                <a href="/category/sports" class="block py-2 text-sm text-gray-600 hover:text-blue-600">Sports</a>
+                                <a href="/category/entertainment" class="block py-2 text-sm text-gray-600 hover:text-blue-600">Entertainment</a>
+                            </div>
+                        </div>
+                        
+                        <a href="/trending" class="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg flex items-center">
+                            <i class="fas fa-fire mr-3 text-orange-500 w-5"></i> Trending
+                            <span class="ml-auto bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Hot</span>
+                        </a>
+                        <a href="/bookmarks" class="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg flex items-center">
+                            <i class="fas fa-bookmark mr-3 text-green-500 w-5"></i> Saved Articles
+                            <span class="ml-auto bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">12</span>
+                        </a>
+                        <a href="/about" class="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg flex items-center">
+                            <i class="fas fa-info-circle mr-3 text-gray-500 w-5"></i> About Us
+                        </a>
+                        
+                        <!-- Mobile Dark Mode Toggle -->
+                        <div class="px-4 py-3 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-moon mr-3 text-indigo-500 w-5"></i>
+                                <span class="text-base font-medium text-gray-700">Dark Mode</span>
+                            </div>
+                            <label class="dark-mode-toggle">
+                                <input type="checkbox" id="mobileDarkModeToggle">
+                                <span class="dark-mode-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <!-- Mobile Admin Login -->
+                        <div class="px-4 pt-4 border-t border-gray-100">
+                            <a href="/admin/login" class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md flex items-center justify-center">
+                                <i class="fas fa-user-shield mr-2"></i> Admin Login
+                            </a>
+                        </div>
+                        
+                        <!-- Mobile App Download -->
+                        <div class="px-4 pt-4">
+                            <p class="text-sm text-gray-500 mb-2">Get our app</p>
+                            <div class="flex space-x-2">
+                                <a href="#" class="flex-1 bg-black text-white py-2 rounded-lg flex items-center justify-center">
+                                    <i class="fab fa-apple mr-2"></i> iOS
+                                </a>
+                                <a href="#" class="flex-1 bg-green-600 text-white py-2 rounded-lg flex items-center justify-center">
+                                    <i class="fab fa-android mr-2"></i> Android
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
 
+            
+
+        
+        <!-- Notification Dropdown (Hidden by default) -->
+        <div id="notificationDropdown" class="hidden absolute right-4 mt-2 w-80 bg-white rounded-xl shadow-lg z-50 border border-gray-200 max-h-96 overflow-y-auto">
+            <div class="p-4 border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-gray-800">Notifications</h3>
+                    <button class="text-blue-600 text-sm font-medium">Mark all as read</button>
+                </div>
+            </div>
+            <div class="divide-y divide-gray-100">
+                <div class="p-4 hover:bg-gray-50">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-bolt text-blue-500"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-gray-800 font-medium">Breaking News Alert</p>
+                            <p class="text-xs text-gray-500">New article published in Politics</p>
+                            <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 hover:bg-gray-50">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-bookmark text-green-500"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-gray-800 font-medium">Saved Article Updated</p>
+                            <p class="text-xs text-gray-500">Your saved article has new information</p>
+                            <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 text-center border-t border-gray-100">
+                <a href="/notifications" class="text-blue-600 text-sm font-medium">View all notifications</a>
+            </div>
+        </div>
+    </div>
 
     <script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const nav = document.querySelector('.creative-nav');
-        
-        // Function to add/remove a stronger shadow on scroll
-        function handleScroll() {
-            if (window.scrollY > 50) {
-                // Add a slightly stronger shadow class after scrolling 50px
-                nav.classList.add('shadow-md');
-            } else {
-                nav.classList.remove('shadow-md');
+        document.addEventListener('DOMContentLoaded', function() {
+            const nav = document.querySelector('.creative-nav');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+            const mobileSearchBar = document.getElementById('mobileSearchBar');
+            const closeMobileSearch = document.getElementById('closeMobileSearch');
+            const notificationBtn = document.getElementById('notificationBtn');
+            const mobileNotificationBtn = document.getElementById('mobileNotificationBtn');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const mobileCategoriesBtn = document.getElementById('mobileCategoriesBtn');
+            const mobileCategoriesMenu = document.getElementById('mobileCategoriesMenu');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
+            
+            // Scroll effect for navbar
+            function handleScroll() {
+                if (window.scrollY > 20) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
             }
-        }
+            
+            // Toggle mobile menu
+            function toggleMobileMenu() {
+                mobileMenuBtn.classList.toggle('active');
+                mobileMenu.classList.toggle('open');
+                
+                // Close search bar if open
+                if (!mobileSearchBar.classList.contains('hidden')) {
+                    mobileSearchBar.classList.add('hidden');
+                }
+                
+                // Close categories if open
+                if (mobileCategoriesMenu.classList.contains('open')) {
+                    mobileCategoriesMenu.classList.remove('open');
+                    mobileCategoriesBtn.querySelector('i.fa-chevron-down').style.transform = 'rotate(0deg)';
+                }
+            }
+            
+            // Toggle mobile search bar
+            function toggleMobileSearch() {
+                mobileSearchBar.classList.toggle('hidden');
+                
+                // Close menu if open
+                if (mobileMenu.classList.contains('open')) {
+                    toggleMobileMenu();
+                }
+                
+                // Focus on search input
+                if (!mobileSearchBar.classList.contains('hidden')) {
+                    setTimeout(() => {
+                        mobileSearchBar.querySelector('input').focus();
+                    }, 100);
+                }
+            }
+            
+            // Toggle notifications dropdown
+            function toggleNotifications() {
+                notificationDropdown.classList.toggle('hidden');
+                
+                // Hide other dropdowns
+                const dropdowns = document.querySelectorAll('.dropdown-menu');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.opacity = '0';
+                    dropdown.style.visibility = 'hidden';
+                });
+            }
+            
+            // Toggle mobile categories menu
+            function toggleMobileCategories() {
+                mobileCategoriesMenu.classList.toggle('open');
+                const icon = mobileCategoriesBtn.querySelector('i.fa-chevron-down');
+                if (mobileCategoriesMenu.classList.contains('open')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+            
 
-        // Listen for scroll events
-        window.addEventListener('scroll', handleScroll);
-    });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                // Close notifications dropdown
+                if (!notificationBtn.contains(event.target) && 
+                    !mobileNotificationBtn.contains(event.target) && 
+                    !notificationDropdown.contains(event.target)) {
+                    notificationDropdown.classList.add('hidden');
+                }
+                
+                // Close desktop dropdowns
+                const dropdowns = document.querySelectorAll('.dropdown');
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(event.target)) {
+                        const menu = dropdown.querySelector('.dropdown-menu');
+                        if (menu) {
+                            menu.style.opacity = '0';
+                            menu.style.visibility = 'hidden';
+                        }
+                    }
+                });
+            });
+            
 
+            // Event Listeners
+            window.addEventListener('scroll', handleScroll);
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            mobileSearchBtn.addEventListener('click', toggleMobileSearch);
+            closeMobileSearch.addEventListener('click', () => {
+                mobileSearchBar.classList.add('hidden');
+            });
+            
+            if (notificationBtn) {
+                notificationBtn.addEventListener('click', toggleNotifications);
+            }
+            
+            if (mobileNotificationBtn) {
+                mobileNotificationBtn.addEventListener('click', toggleNotifications);
+            }
+            
+            mobileCategoriesBtn.addEventListener('click', toggleMobileCategories);
+            
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', toggleDarkMode);
+            }
+            
+            if (mobileDarkModeToggle) {
+                mobileDarkModeToggle.addEventListener('change', toggleDarkMode);
+            }
+            
+            // Handle search bar focus on desktop
+            const desktopSearchInput = document.querySelector('.search-bar input');
+            if (desktopSearchInput) {
+                desktopSearchInput.addEventListener('focus', function() {
+                    this.parentElement.classList.add('expanded');
+                });
+                
+                desktopSearchInput.addEventListener('blur', function() {
+                    if (this.value === '') {
+                        this.parentElement.classList.remove('expanded');
+                    }
+                });
+            }
+            
+            // Initialize scroll state
+            handleScroll();
+            
+            // Close mobile menu when clicking a link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('open')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+        });
     </script>
-
 </body>
 </html>

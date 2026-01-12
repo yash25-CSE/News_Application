@@ -57,6 +57,15 @@ router.get("/upload_headline", (req, res) => {
   res.render("admin/upload_headline");
 });
 
+//Video List list
+router.get("/video_list", (req, res) => {
+  res.render("admin/video_list");
+});
+
+//Headline List list
+router.get("/headline_list", (req, res) => {
+  res.render("admin/headline_list");
+});
 
 
 

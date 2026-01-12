@@ -653,53 +653,7 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="bi bi-newspaper"></i> NewsHub
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/">
-                            <i class="bi bi-house-door me-1"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/Latest">
-                            <i class="bi bi-card-text me-1"></i> Latest News
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/current-affairs">
-                            <i class="bi bi-clock-history me-1"></i> Current Affairs
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/headlines">
-                            <i class="bi bi-megaphone me-1"></i> Headlines
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="/videos">
-                            <i class="bi bi-camera-video me-1"></i> Video News
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
-                    <a href="#" class="btn btn-outline-light">
-                        <i class="bi bi-person-circle me-1"></i> Account
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <%-include('navbar') %>
 
     <!-- Video Header -->
     <section class="video-header">
@@ -924,32 +878,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="text-white mb-3">NewsHub Video</h5>
-                    <p class="text-white-50">
-                        Your destination for high-quality news videos, interviews, and documentaries from around the world.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="social-icons">
-                        <a href="#" class="text-white-50 me-3"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white-50 me-3"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-white-50 me-3"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="text-white-50"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 NewsHub. All rights reserved. | 
-                    <a href="#" class="text-white-50">Privacy Policy</a> | 
-                    <a href="#" class="text-white-50">Terms of Service</a>
-                </p>
-            </div>
-        </div>
-    </footer>
+    <%-include('footer') %>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -684,60 +684,14 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="bi bi-newspaper"></i> NewsHub
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/">
-                            <i class="bi bi-house-door me-1"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/Latest">
-                            <i class="bi bi-card-text me-1"></i> Latest News
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/current-affairs">
-                            <i class="bi bi-clock-history me-1"></i> Current Affairs
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="/headlines">
-                            <i class="bi bi-megaphone me-1"></i> Headlines
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="/photose">
-                            <i class="bi bi-images me-1"></i> Photo Gallery
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
-                    <a href="#" class="btn btn-outline-light">
-                        <i class="bi bi-person-circle me-1"></i> Account
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <%- include('navbar') %>
 
     <!-- Breadcrumb -->
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-custom">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/photose">Photo Gallery</a></li>
+                <li class="breadcrumb-item"><a href="/photose">Article List</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><%= post.title %></li>
             </ol>
         </nav>
@@ -777,10 +731,10 @@
                     </div>
                     
                     <div class="photo-tags">
-                        <span class="tag">Photography</span>
-                        <span class="tag">Nature</span>
-                        <span class="tag">Landscape</span>
-                        <span class="tag">Art</span>
+                        <span class="tag">Politics</span>
+                        <span class="tag">Business</span>
+                        <span class="tag">Technology</span>
+                        <span class="tag">Health</span>
                     </div>
                 </div>
             </div>
@@ -935,7 +889,7 @@
                         <div class="card-body">
                             <h5 class="card-title mb-3">
                                 <i class="bi bi-info-circle me-2 text-primary"></i>
-                                Photo Information
+                                News Information
                             </h5>
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between mb-2">
@@ -951,8 +905,8 @@
                                     <span class="fw-medium">JPEG</span>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <span class="text-muted">Camera:</span>
-                                    <span class="fw-medium">Canon EOS R5</span>
+                                    <span class="text-muted"></span>
+                                    <span class="fw-medium"></span>
                                 </div>
                             </div>
                         </div>
@@ -960,30 +914,30 @@
 
                     <!-- Related Photos -->
                     <div class="related-section">
-                        <h5 class="section-title mb-4">Related Photos</h5>
+                        <h5 class="section-title mb-4">Related News</h5>
                         <div class="related-photos">
                             <div class="related-photo">
-                                <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <img src="https://th.bing.com/th/id/OIP.4jTu13uPODf-berJfhxlVgHaFF?w=310&h=198&c=12&rs=1&p=0&bgcl=ff0e5d&r=0&o=6&dpr=1.4&pid=23.1" alt="Related photo">
                                 <div class="photo-overlay">
-                                    <small>Mountain Landscape</small>
+                                    <small></small>
                                 </div>
                             </div>
                             <div class="related-photo">
-                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1U3Ol0.img?w=768&h=432&m=6&x=184&y=142&s=792&d=231" alt="Related photo">
                                 <div class="photo-overlay">
-                                    <small>Ocean View</small>
+                                    <small></small>
                                 </div>
                             </div>
                             <div class="related-photo">
-                                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1U2BSa.img?w=700&h=400&m=6&x=516&y=200&s=94&d=94" alt="Related photo">
                                 <div class="photo-overlay">
-                                    <small>Forest Path</small>
+                                    <small></small>
                                 </div>
                             </div>
                             <div class="related-photo">
-                                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Related photo">
+                                <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1Ti8ZQ.img?w=700&h=472&m=6&x=143&y=92&s=452&d=129" alt="Related photo">
                                 <div class="photo-overlay">
-                                    <small>Sunset Colors</small>
+                                    <small></small>
                                 </div>
                             </div>
                         </div>
@@ -993,12 +947,12 @@
                     <div class="card border-0 shadow-sm mt-4">
                         <div class="card-body text-center">
                             <i class="bi bi-trophy display-4 text-warning mb-3"></i>
-                            <h5 class="card-title">Photo of the Day</h5>
+                            <h5 class="card-title">Best News</h5>
                             <p class="card-text text-muted mb-3">
-                                This photo has been selected as today's featured image!
+                                This Samachar India's Number 1 Trusted News Platform 
                             </p>
                             <button class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-award me-1"></i> View Award
+                                <i class="bi bi-award me-1"></i> About Samachar
                             </button>
                         </div>
                     </div>
@@ -1008,32 +962,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="text-white mb-3">NewsHub Photo Gallery</h5>
-                    <p class="text-white-50">
-                        Capturing moments, telling stories, and inspiring creativity through photography.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="social-icons">
-                        <a href="#" class="text-white-50 me-3"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white-50 me-3"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-white-50 me-3"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white-50"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 NewsHub. All rights reserved. | 
-                    <a href="#" class="text-white-50">Privacy Policy</a> | 
-                    <a href="#" class="text-white-50">Terms of Service</a>
-                </p>
-            </div>
-        </div>
-    </footer>
+    <%- include('footer') %>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">

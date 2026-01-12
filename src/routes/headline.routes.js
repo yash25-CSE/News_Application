@@ -37,4 +37,36 @@ router.get("/headlines", async (req, res) => {
     }
 });
 
+
+
+
+
+/* =========================
+   ADMIN – VIEW ALL HEADLINES
+========================= */
+router.get("/admin/headlines", async (req, res) => {
+  try {
+    const headlines = await Headline.find().sort({ createdAt: -1 });
+    res.render("admin/headline_list", { headlines });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading headlines");
+  }
+});
+
+/* =========================
+   ADMIN – DELETE HEADLINE
+========================= */
+router.get("/admin/headlines/delete/:id", async (req, res) => {
+  try {
+    await Headline.findByIdAndDelete(req.params.id);
+    res.redirect("/admin/headlines");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting headline");
+  }
+});
+
+
+
 module.exports = router;
